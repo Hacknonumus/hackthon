@@ -10,6 +10,16 @@ class Main():
         self.total,self.sub = total,sub
         self.overload,self.mode=overload,mode
         self.sub_total=sub_total 
+        
+    def check_update(self):
+        data = requests.get("https://raw.githubusercontent.com/Hacknonumus/hackthon/main/universal_smart_charging_infrastructure.py")
+        data1 = requests.get("https://raw.githubusercontent.com/Hacknonumus/hackthon/main/data.json")
+        x,currentversion = json.loads(data1.text) , "1.0.0"
+        if  currentversion == x['currentversion']:
+            print("updated")
+        else:
+            print("update available\nupdating program")
+            with open('universal_smart_charging_infrastructure.py','w') as file:file.write(data.text)
 
     def banner(load,totals,pvv,subs,modes,sub_totals):
         with open('data.json','r') as data:

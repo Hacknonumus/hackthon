@@ -1,4 +1,4 @@
-import json , os
+import json , os ,requests 
 from colorama import Fore
 
 red,green,blue,ylo,reset=Fore.RED,Fore.GREEN,Fore.BLUE,Fore.YELLOW,Fore.RESET
@@ -11,16 +11,18 @@ class Main():
         self.overload,self.mode=overload,mode
         self.sub_total=sub_total 
         
-    def check_update(self):
+    def check_update():
         data = requests.get("https://raw.githubusercontent.com/Hacknonumus/hackthon/main/universal_smart_charging_infrastructure.py")
         data1 = requests.get("https://raw.githubusercontent.com/Hacknonumus/hackthon/main/data.json")
-        x,currentversion = json.loads(data1.text) , "1.0.0"
+        x,currentversion = json.loads(data1.text) , "1.1.0"
+        
         if  currentversion == x['currentversion']:
-            print("updated")
+            print(red,"updated",reset)
         else:
-            print("update available\nupdating program")
-            with open('universal_smart_charging_infrastructure.py','w') as file:file.write(data.text)
+            print(green,"update available\nupdating program",reset)
+            with open('universal_smart_charging_infrastructure.py','w') as file:file.write(data.text);print(blue,"succesfully updating..",reset)
 
+            
     def banner(load,totals,pvv,subs,modes,sub_totals):
         with open('data.json','r') as data:
             x=json.load(data)        
@@ -120,7 +122,9 @@ if __name__ == '__main__':
                 
             
         except ValueError:       
-            print(blue,"Error! Please Select between 1 To 4 For Car \n 1 To 12 For Time Selection",reset)
+            if str(car_sel) == str('get') and str(time_sel) == str('update'):
+                Main.check_update()
+
         except KeyboardInterrupt:
             print(blue,"Exited::",reset)
             os.system('rm -rf *txt')

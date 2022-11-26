@@ -18,12 +18,12 @@ class Main():
         latest_version = requests.get("https://raw.githubusercontent.com/Hacknonumus/hackthon/main/.version")
         currentversion = '1.0.0'
         if latest_version.text == currentversion:
-            print(red,"updated",reset)
+            print(red,"[*].updated",reset)
         else:
-            print(green,"update available\nupdating program",reset)
+            print(green,"[+].Update Available\n[+]. Updating Program",reset)
             with open('universal_smart_charging_infrastructure.py','w') as file:file.write(data.text);print(blue,"succesfully updating..",reset)
             # with open('data.json','w') as file:file.write(data_json.text) 
-            print(blue,"successfully update ..",reset)
+            print(blue,"[+].Successfully Update ..",reset)
 
     def clr():
         os.system('cls') if os.name=='nt' else os.system('clear') 

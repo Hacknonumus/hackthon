@@ -10,19 +10,27 @@ class Main():
         self.total,self.sub = total,sub
         self.overload,self.mode=overload,mode
         self.sub_total=sub_total 
-        
+
     def check_update():
-        data = requests.get("https://raw.githubusercontent.com/Hacknonumus/hackthon/main/universal_smart_charging_infrastructure.py")
-        data1 = requests.get("https://raw.githubusercontent.com/Hacknonumus/hackthon/main/data.json")
-        x,currentversion = json.loads(data1.text) , "1.1.0"
         
-        if  currentversion == x['currentversion']:
+        data = requests.get("https://raw.githubusercontent.com/Hacknonumus/hackthon/main/universal_smart_charging_infrastructure.py")
+        data_json = requests.get("https://raw.githubusercontent.com/Hacknonumus/hackthon/main/data.json")
+        latest_version = requests.get("https://raw.githubusercontent.com/Hacknonumus/hackthon/main/.version")
+        currentversion = '1.0.0'
+        if latest_version.text == currentversion:
             print(red,"updated",reset)
         else:
             print(green,"update available\nupdating program",reset)
             with open('universal_smart_charging_infrastructure.py','w') as file:file.write(data.text);print(blue,"succesfully updating..",reset)
+            # with open('data.json','w') as file:file.write(data_json.text) 
+            print(blue,"successfully update ..",reset)
 
-            
+    def clr():
+        os.system('cls') if os.name=='nt' else os.system('clear') 
+    
+    def rmfiles():
+        os.system('del capacity.txt time_value.txt') if os.name=='nt' else os.system('rm -rf capacity.txt time_value.txt') 
+        
     def banner(load,totals,pvv,subs,modes,sub_totals):
         with open('data.json','r') as data:
             x=json.load(data)        
@@ -66,8 +74,8 @@ class Main():
                 for cars , times in zip(x[str(car_sel)],x['time']):        
                     for i,j,k,l in zip(['capacity.txt'],[cars['capacity']],['time_value.txt'],[times['{}'.format(self.pv)]]):
                         with open(i,'a') as file,open(k,'a') as file1:file.write("{}\n".format(j)),file1.write("{}\n".format(l))
-                    os.system('clear')        
-                    
+                    Main.clr()
+
                     with open(i,'r') as file,open(k,'r') as file1: 
                         x,x1,self.total,self.sub,self.sub_total=file.readlines(),file1.readlines(),0,0,0
                         for i,j in zip(x,x1):
@@ -127,7 +135,7 @@ if __name__ == '__main__':
 
         except KeyboardInterrupt:
             print(blue,"Exited::",reset)
-            os.system('rm -rf *txt')
+            Main.rmfiles()
             quit()
             
-os.system('rm -rf *txt')
+Main.rmfiles()

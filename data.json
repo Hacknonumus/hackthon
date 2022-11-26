@@ -25,7 +25,9 @@
 }],
    
 "ac_charger":[{"ports":"type-2","type-2":"22"}],
-"dc_charger":[{"ports":"css","ccs":"30"}]
+"dc_charger":[{"ports":"css","ccs":"30"}],
+
+    "currentversion":"{1.0.0}"
 }
 
 

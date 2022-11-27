@@ -12,18 +12,23 @@ class Main():
         self.sub_total=sub_total 
 
     def check_update():
-        
+        current_version = """
+        {
+            "currentversion": "1.0.1",
+            "latestversion":"1.0.1"
+        }
+        """
         data = requests.get("https://raw.githubusercontent.com/Hacknonumus/hackthon/main/universal_smart_charging_infrastructure.py")
         data_json = requests.get("https://raw.githubusercontent.com/Hacknonumus/hackthon/main/data.json")
         latest_version = requests.get("https://raw.githubusercontent.com/Hacknonumus/hackthon/main/.version")
-        currentversion = '1.0.0'
-        if latest_version.text == currentversion:
-            print(red,"[*].updated",reset)
+        x,y = json.loads(latest_version.text),json.loads(current_version)
+
+        if x['latestversion'] == y['currentversion']:
+            print(red,"[*].Already Updated",reset)
         else:
-            print(green,"[+].Update Available\n[+]. Updating Program",reset)
-            with open('universal_smart_charging_infrastructure.py','w') as file:file.write(data.text);print(blue,"succesfully updating..",reset)
+            print(green,"[+].Update Available\n[+].Updating Program",reset)
+            with open('universal_smart_charging_infrastructure.py','w') as file:file.write(data.text);print(blue,"[+].Succesfully Updated Progeam..",reset)
             # with open('data.json','w') as file:file.write(data_json.text) 
-            print(blue,"[+].Successfully Update ..",reset)
 
     def clr():
         os.system('cls') if os.name=='nt' else os.system('clear') 

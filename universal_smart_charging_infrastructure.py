@@ -27,8 +27,9 @@ class Main():
             print(red,"[*].Already Updated",reset)
         else:
             print(green,"[+].Update Available\n[+].Updating Program",reset)
-            with open('universal_smart_charging_infrastructure.py','w') as file:file.write(data.text);print(blue,"[+].Succesfully Updated Progeam..",reset)
-            # with open('data.json','w') as file:file.write(data_json.text) 
+            for i,j in zip(('universal_smart_charging_infrastructure.py','data.json','.version'),(data.text,data_json.text,latest_version.text)):
+                with open(i, 'w') as file:file.write(j)
+            print(green,"[+].Update Complete",reset) 
 
     def clr():
         os.system('cls') if os.name=='nt' else os.system('clear') 
@@ -37,39 +38,39 @@ class Main():
         os.system('del capacity.txt time_value.txt') if os.name=='nt' else os.system('rm -rf capacity.txt time_value.txt') 
         
     def banner(load,totals,pvv,subs,modes,sub_totals):
-        with open('data.json','r') as data:
-            x=json.load(data)        
-            for cars , times in zip(x[str(car_sel)],x['time']):
-                                                                        
-                print('''
-                        {0}    [* select your charging hub]     {1}           
-                        {4}                                     {1}
-                        {4}    [1. nexon 30.2]   [2. tigor 26]  {1}
-                        {4}    [3. mgzs 44.5]    [4. kona 39.2] {1}
+        with open('data.json','r') as data:x=json.load(data)        
+        with open('.version','r') as file:version=json.load(file)
 
-                {0}          [* Select Time Slot AM/PM]               {1}       {4}|_Car's Name::    {1} {2}{5}{1} {4} |_Car's Capacity::{1} {2}{6}{1}    
-                {0} _________________________________________________ {1}       {4}|_Time Zone::     {1} {2}{7}{1} {4} |_{8}'s Value::  {1} {2}{9}{1}    
-                {0}|                                                 |{1}       {4}|_Demand::        {1} {2}{10}{1} {4} |_Substration::   {1} {2}{12}{1}    
-                {3}| [Time-Zone]            [PV2EV]   [ESU]  [GRID]  |{1}       {4}|_Load Scenerio:: {1} {2}{11}{1} {4}            {1} {2}    {1} 
-                {0}|_________________________________________________|{1}       {4}|_Operating Mode::{1} {2}{13}{1} {4}            {1} {2}    {1}     
-                                                                                                      
-                {0}[{1}{0}01. 8-10:am    ---> {1}{2}    70kw    {3}{0}  0kw     {1}{4}  13.7  {0}]{1}      {4}|__{11}_value:{1}{3}{14}{2}
-                {0}[{1}{0}02. 10-12:am   ---> {1}{2}    100kw   {3}{0}  0kw     {1}{4}  13.9  {0}]{1}       
-                {0}[{1}{0}03. 12-2:pm    ---> {1}{2}    130kw   {3}{0}  54.6kw  {1}{4}    0   {0}]{1}       
-                {0}[{1}{0}04. 2-4:pm     ---> {1}{2}    120kw   {3}{0}  93.9kw  {1}{4}    0   {0}]{1}       
-                {0}[{1}{0}05. 4-6:pm     ---> {1}{2}    80kw    {3}{0}  110.4kw {1}{4}    0   {0}]{1}      
-                {0}[{1}{0}06. 6-8:pm     ---> {1}{0}    0kw     {1}{2}  21.4kw  {1}{4}    0   {0}]{1}         
-                {0}[{1}{0}07. 8-10:pm    ---> {1}{0}    0kw     {1}{2}  17.8kw  {1}{4}  17.8  {0}]{1}           
-                {0}[{1}{0}08. 10-12:pm   ---> {1}{0}    0kw     {1}{2}  64.8kw  {1}{4}  160   {0}]{1}          
-                {0}[{1}{0}09. 12-02:am   ---> {1}{0}    0kw     {1}{2}  119.4kw {1}{4}  150   {0}]{1}          
-                {0}[{1}{0}10. 02-04:am   ---> {1}{0}    0kw     {1}{2}  49.1kw  {1}{4}    0   {0}]{1}
-                {0}[{1}{0}11. 04-06:am   ---> {1}{0}    0kw     {1}{2}  11.3kw  {1}{4}  11.3  {0}]{1}
-                {0}[{1}{0}12. 06-08:am   ---> {1}{0}    0kw     {1}{2}  0kw     {1}{4}  86.4  {0}]{1}
+        for cars , times in zip(x[str(car_sel)],x['time']):
+                                                                    
+            print('''
+                    {0}    [* select your charging hub]     {1}           
+                    {4}                                     {1}
+                    {4}    [1. nexon 30.2]   [2. tigor 26]  {1}
+                    {4}    [3. mgzs 44.5]    [4. kona 39.2] {1}
+            {0}          [* Select Time Slot AM/PM]               {1}       {4}|_Car's Name::    {1} {2}{5}{1} {4}  |_Car's Capacity::{1} {2}{6}{1}    
+            {0} _________________________________________________ {1}       {4}|_Time Zone::     {1} {2}{7}{1} {4}  |_{8}'s Value::  {1} {2}{9}{1}    
+            {0}|                                                 |{1}       {4}|_Demand::        {1} {2}{10}{1} {4} |_Substration::   {1} {2}{12}{1}    
+            {3}| [Time-Zone]            [PV2EV]   [ESU]  [GRID]  |{1}       {4}|_Load Scenerio:: {1} {2}{11}{1} {4}{1}{2}{1} 
+            {0}|_________________________________________________|{1}       {4}|_Operating Mode::{1} {2}{13}{1} {4}{1}{2}{1}    {4}|__{11}_value:{1}{2}{14}{2}
+                                                                                                  
+            {0}[{1}{0}01. 8-10:am    ---> {1}{2}    70kw    {3}{0}  0kw     {1}{4}  13.7  {0}]{1}      
+            {0}[{1}{0}02. 10-12:am   ---> {1}{2}    100kw   {3}{0}  0kw     {1}{4}  13.9  {0}]{1}       
+            {0}[{1}{0}03. 12-2:pm    ---> {1}{2}    130kw   {3}{0}  54.6kw  {1}{4}    0   {0}]{1}       
+            {0}[{1}{0}04. 2-4:pm     ---> {1}{2}    120kw   {3}{0}  93.9kw  {1}{4}    0   {0}]{1}       
+            {0}[{1}{0}05. 4-6:pm     ---> {1}{2}    80kw    {3}{0}  110.4kw {1}{4}    0   {0}]{1}      
+            {0}[{1}{0}06. 6-8:pm     ---> {1}{0}    0kw     {1}{2}  21.4kw  {1}{4}    0   {0}]{1}         
+            {0}[{1}{0}07. 8-10:pm    ---> {1}{0}    0kw     {1}{2}  17.8kw  {1}{4}  17.8  {0}]{1}           
+            {0}[{1}{0}08. 10-12:pm   ---> {1}{0}    0kw     {1}{2}  64.8kw  {1}{4}  160   {0}]{1}          
+            {0}[{1}{0}09. 12-02:am   ---> {1}{0}    0kw     {1}{2}  119.4kw {1}{4}  150   {0}]{1}          
+            {0}[{1}{0}10. 02-04:am   ---> {1}{0}    0kw     {1}{2}  49.1kw  {1}{4}    0   {0}]{1}
+            {0}[{1}{0}11. 04-06:am   ---> {1}{0}    0kw     {1}{2}  11.3kw  {1}{4}  11.3  {0}]{1}
+            {0}[{1}{0}12. 06-08:am   ---> {1}{0}    0kw     {1}{2}  0kw     {1}{4}  86.4  {0}]{1}
+                                            {0}
+                                    [Press 0 to Exit ]
 
-                                                {0}
-                                        [Press 0 to Exit ]
-
-        ===> '''.format(red,reset,green,ylo,blue,cars['name'],cars['capacity'],times[str(time_sel)],pvv,times[pvv],totals,load,subs,modes,sub_totals))
+                                {4}  Current Version:~ {1} {2}{15}{1}
+    ===> '''.format(red,reset,green,ylo,blue,cars['name'],cars['capacity'],times[str(time_sel)],pvv,times[pvv],totals,load,subs,modes,sub_totals,version['currentversion']))
 
     def main_pv(self):
         
@@ -123,7 +124,7 @@ if __name__ == '__main__':
                     p1=Main(car_sel,time_sel,'esu{}'.format(str(time_sel)),0,0,'UnderLoad','PV2EV',0)
                     p1.main_pv()
                     Main.banner(load,totals,pvv,subs,modes,sub_totals)  
-               
+                
                 else:
                     print(blue,"Types Wronge Number ! Please Select Between 1 To 12  ",reset)
                                          
@@ -134,9 +135,12 @@ if __name__ == '__main__':
                 print(blue,"Types Wronge Number ! Please Select Between 1 To 4 ",reset)
                 
             
-        except ValueError:       
+        except ValueError:
             if str(car_sel) == str('get') and str(time_sel) == str('update'):
                 Main.check_update()
+                quit()
+            else:
+                print(blue,"Wrong Command",reset)
 
         except KeyboardInterrupt:
             print(blue,"Exited::",reset)

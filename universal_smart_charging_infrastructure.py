@@ -26,7 +26,7 @@ class Main():
        
         current_version = """
         {
-            "currentversion": "1.0.1",
+            "currentversion": "1.0.2",
             "latestversion":"1.0.2"
         }
         """

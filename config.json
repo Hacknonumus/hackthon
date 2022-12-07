@@ -1,0 +1,15 @@
+{
+    "update":[{
+        "version":"https://raw.githubusercontent.com/Hacknonumus/hackthon/main/.version",
+        "universal_smart_charging_infrastructure":"https://raw.githubusercontent.com/Hacknonumus/hackthon/main/universal_smart_charging_infrastructure.py",
+        "Main":"https://raw.githubusercontent.com/Hacknonumus/hackthon/main/Main.py",
+        "default_dataset":"https://raw.githubusercontent.com/Hacknonumus/hackthon/main/data.json",
+        "config_file":"https://raw.githubusercontent.com/Hacknonumus/hackthon/main/config.json"
+        
+    }],
+
+    "datasets":[{
+
+    }]
+
+}

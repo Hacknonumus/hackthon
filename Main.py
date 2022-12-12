@@ -6,29 +6,45 @@ red,green,blue,ylo,reset=Fore.RED,Fore.GREEN,Fore.BLUE,Fore.YELLOW,Fore.RESET
 
 
 class Main():
+    
+    class table_maker():
+        def print_data_table(self,file,time_no,car_name,car_capacity_value,pv_esu_grid):
+            p1=Main.json_viewer()
+            x=PrettyTable()
+            x.field_names=[f"{red}Selected Car{reset}",f"{red}Selected Car Capacity{reset}",f"{red}Selected TimeZone{reset}",f"{red}{pv_esu_grid}'s Value{reset}"]
+            x.add_row([f'{blue}{car_name}{reset}',f'{blue}{car_capacity_value}{reset}',f'{blue}{p1.json_time_viewer(file,time_no,time_no)}{reset}',f'{blue}{p1.json_time_viewer(file,time_no,pv_esu_grid)}{reset}'])
+            return print(x)
+                 
+        def print_value_table(self,car_sel,time,add,pv,esu,grid,load,mode):
+            x=PrettyTable()
+            x.field_names=[f"{red}SELECTED CAR{reset}",f"{red}TIMEZONE{reset}",f"{red}DEMAND{reset}",f"{red}PV{reset}",f"{red}ESU{reset}",f"{red}GRID{reset}",f"{red}LOAD{reset}",f"{red}MODE{reset}"]
+            x.add_row([f"{blue}{car_sel}{reset}",f"{blue}{time}{reset}",f"{blue}{add}{reset}",f"{blue}{pv}{reset}",f"{blue}{esu}{reset}",f"{blue}{grid}{reset}",f"{blue}{load}{reset}",f"{blue}{mode}{reset}"])
+            return print(x)
+            
     class json_writer():
         def json_file_writer(self,file_name,dict):
-            file=open(file_name,'w')
-            json.dump(dict,file,indent=6)
-            file.close()
+            with open(file_name,'a') as f:
+                json.dump(dict,f,indent=2)
 
     class json_viewer():
-        def json_file_viewer(self,file,key,key2):
+        def json_file_viewer(self,file,key,value):
             with open(file,'r') as file:data=json.load(file)
             for i in data[str(key)]:
-                return i[str(key2)]
-
+                return i[str(value)]
+                # for j in i[str(key2)]:
+                    # return j[str(value)]
+                   
         def json_car_viewer(self,file,car_select,name_or_capacity):
             with open(file,'r')as file:data=json.load(file)
             for j in data[str(car_select)]:
                 return j[str(name_or_capacity)]
-
+                
         def json_time_viewer(self,file,time_no,time_no_pv_esu_grid):
             with open(file,'r') as file:data=json.load(file)
             for i in data['time']:
                 for j in i[str(time_no)]:
                     return j[str(time_no_pv_esu_grid)]
-
+                    
     def __init__(self,file,add=0,sub=0,load='UnderLoad',mode='PV2EV',sub_total=0):
         self.file=file
         self.add,self.sub = add,sub
@@ -42,10 +58,11 @@ class Main():
         p1=Main.json_viewer()
         current_version = """
         {
-            "currentversion": "2.0.2",
+            "currentversion": "1.0.2",
             "latestversion":"2.0.2"
         }
         """
+
         data0=requests.get(p1.json_file_viewer('config.json','update','version'))
         data1=requests.get(p1.json_file_viewer('config.json','update','universal_smart_charging_infrastructure'))
         data2=requests.get(p1.json_file_viewer('config.json','update','Main'))
@@ -72,49 +89,39 @@ class Main():
             {0}get help     :-{1}{2}help about program and its sub_commands{1}
             
         '''.format(red,reset,blue))
-
-    def print_data_table(self,file,time_no,car_name,car_capacity_value,pv_esu_grid):
-        p1=Main.json_viewer()
-        x=PrettyTable()
-        x.field_names=[f"{red}Selected Car{reset}",f"{red}Selected Car Capacity{reset}",f"{red}Selected TimeZone{reset}",f"{red}{pv_esu_grid}'s Value{reset}"]
-        x.add_row([f'{blue}{car_name}{reset}',f'{blue}{car_capacity_value}{reset}',f'{blue}{p1.json_time_viewer(file,time_no,time_no)}{reset}',f'{blue}{p1.json_time_viewer(file,time_no,pv_esu_grid)}{reset}'])
-        print(x)
-
-    def print_value_table(self):
-        x=PrettyTable()
-        x.field_names=[f"{red}Demand{reset}",f"{red}Subtraction{reset}",f"{red}Load Scenerio{reset}",f"{red}Operating Mode{reset}",f"{red}{self.load}'s Value{reset}"]
-        x.add_row([f"{blue}{self.add}{reset}",f"{blue}{self.sub}{reset}",f"{blue}{self.load}{reset}",f"{blue}{self.mode}{reset}",f"{blue}{self.sub_total}{reset}"])
-        print(x)
-    
-    def banner(self,file,time_no,car_name,car_capacity_value,pv_esu_grid):
+ 
+    def banner(self,file,car_sel,time_no,car_name,car_capacity_value,pv_esu_grid):
         x,y = PrettyTable(),PrettyTable()
-        k=PrettyTable()
-        for i in range(1,5):
-            names=Main.json_viewer.json_car_viewer(self,file,i,'name')
-            capacitys=Main.json_viewer.json_car_viewer(self,file,i,'capacity')
-            x.field_names=[f"{red}Sr.No{reset}",f"{red}Car's Name{reset}",f"{red}Car's Capacity{reset}"]
-            x.add_row([f'{blue}{i}{reset}',f'{blue}{names}{reset}',f'{blue}{capacitys}{reset}'])
+        try:
+            for i in range(1,5):
+                names=Main.json_viewer.json_car_viewer(self,file,i,'name')
+                capacitys=Main.json_viewer.json_car_viewer(self,file,i,'capacity')
+                x.field_names=[f"{red}Sr.No{reset}",f"{red}Car's Name{reset}",f"{red}Car's Capacity{reset}"]
+                x.add_row([f'{blue}{i}{reset}',f'{blue}{names}{reset}',f'{blue}{capacitys}{reset}'])
 
-        for j in range(1,13):
-        
-            times=Main.json_viewer.json_time_viewer(self,file,j,j)
-            pvs=Main.json_viewer.json_time_viewer(self,file,j,'pv')
-            esus=Main.json_viewer.json_time_viewer(self,file,j,'esu')
-            grids=Main.json_viewer.json_time_viewer(self,file,j,'grid') 
-            
-            y.field_names=[f"{red}Sr.No{reset}",f"{red}TimeZone{reset}",f"{red}Pv{reset}",f"{red}Esu{reset}",f"{red}Grid{reset}"]
-            y.add_row([f'{blue}{j}{reset}',f'{blue}{times}{reset}',f'{blue}{pvs}{reset}',f'{blue}{esus}{reset}',f'{blue}{grids}{reset}'])
-
-        print(x.get_string())
-        print(y.get_string())
-        Main.print_data_table(self,file,time_no,car_name,car_capacity_value,pv_esu_grid)
-        Main.print_value_table(self)
-        
+            for j in range(1,13):
+                times=Main.json_viewer.json_time_viewer(self,file,j,j)
+                pvs=Main.json_viewer.json_time_viewer(self,file,j,'pv')
+                esus=Main.json_viewer.json_time_viewer(self,file,j,'esu')
+                grids=Main.json_viewer.json_time_viewer(self,file,j,'grid') 
+                y.field_names=[f"{red}Sr.No{reset}",f"{red}TimeZone{reset}",f"{red}Pv{reset}",f"{red}Esu{reset}",f"{red}Grid{reset}"]
+                y.add_row([f'{blue}{j}{reset}',f'{blue}{times}{reset}',f'{blue}{pvs}{reset}',f'{blue}{esus}{reset}',f'{blue}{grids}{reset}'])
+        except KeyError:
+            pass 
+        else:
+            print(x.get_string())
+            print(y.get_string())
+            m1=Main.table_maker()
+            m1.print_data_table(file,time_no,car_name,car_capacity_value,pv_esu_grid)
+            # m1.print_value_table(car_sel,self.add,pv_value,esu_value,grid_value,self.load,self.mode)
+                    
     def main_al(self,file,car_no,time_no,pv_esu_grid):
+        
         p1=Main.json_viewer()
         p2=Main.json_writer()
         car_name=p1.json_car_viewer(file,car_no,'name')
         car_capacity_value=p1.json_car_viewer(file,car_no,'capacity')
+        time_value=p1.json_time_viewer(file,time_no,time_no)
         pv_value=p1.json_time_viewer(file,time_no,'pv')
         esu_value=p1.json_time_viewer(file,time_no,'esu')
         grid_value=p1.json_time_viewer(file,time_no,'grid')
@@ -122,46 +129,51 @@ class Main():
         def addition(car_capacity_value):
             self.add = float(car_capacity_value) + self.add
             self.sub_total=self.add   
-            return (self.add)
+            return self.add
 
         def subtraction(time_no): 
             i,j=float(p1.json_time_viewer(file,time_no,pv_esu_grid)),float(p1.json_car_viewer(file,car_no,'capacity'))
             self.sub = i-j
-            return (self.sub)
+            return self.sub
             
-        addition(car_capacity_value) if pv_esu_grid == 'pv' else subtraction(time_no)
-
-        if self.add >= float(pv_value) or self.sub >= float(pv_value):
+        addition(car_capacity_value) if pv_esu_grid == 'pv' or pv_esu_grid == 'esu' else None
+        
+        print("Demand is ::",self.add)
+        if self.add >= float(pv_value) :
             self.load,self.mode="OverLoad","[*].ESU2EV [*].GRID2EV"   
+            self.sub_total = self.sub_total - float(pv_value) # >> value going to esu_value
+            print("Demand-pv=",self.sub_total)
+
+        if self.sub_total >= float(esu_value):
             self.sub_total = self.sub_total - float(pv_value) - float(esu_value)  
-            print(self.sub_total)         
-            
+            print("demand-pv-esu=",self.sub_total,"  And going to GRID2EV")   
+
+        elif float(esu_value) == 0:
+            result=int(time_no)-int(1)
+            if result != 0:
+                esu_value=self.sub_total+float(p1.json_time_viewer(file,result,'esu'))
+            self.sub=esu_value
+            print("Going To ESU2EV")
+
         else:
             self.load,self.mode="UnderLoad","[*].PV2EV [*].PVE2ESU"
-            self.sub_total = self.sub_total - float(pv_value)    #   self.sub_total == self.add (demand)
-            print(self.sub_total)
-            # for i in time_no:result = int(i) - 1
-            # subtraction(time_no)
-            # self.sub_total = float(self.sub)+p1.json_time_viewer(file,result,pv_esu_grid) 
-        Main.clr(self)
-        dict1={
-            car_no:[{
-            "name":car_name,
-            "capacity":car_capacity_value
-            }],
-            time_no:[{
-            time_no:p1.json_time_viewer(file,time_no,time_no),
-            "pv":pv_value,
-            "esu":self.sub_total,
-            "grid":0
-            }]
-        }
-        p2.json_file_writer('dataset3.json',dict1)
-        Main.banner(self,file,time_no,car_name,car_capacity_value,pv_esu_grid)
+            self.sub_total = float(pv_value) - self.sub_total    #   self.sub_total == self.add (demand)
+            print("pv-ev_demand is going to ESU  ",self.sub_total)
+        # Main.clr(self)
+        for i in car_no:
+            car=p1.json_car_viewer('formated_data.json',i,'name')
+            capacity=p1.json_car_viewer('formated_data.json',i,'capacity')
+            with open('new_data.txt','a') as file:file.write(f"SELECTED CAR & CAPACITY:-{car}::{capacity} TIMEZONE:-{time_value} DEMAND:-{self.sub_total} PV:-{pv_value} ESU:-{esu_value} GRID:-{grid_value} LOAD:-{self.load} MODE:-{self.mode} \n")
+        
+            m1=Main.table_maker()
+            m1.print_value_table(car,time_value,self.add,pv_value,self.sub,grid_value,self.load,self.mode)
+        
+        # Main.banner(self,file,car_no,time_no,car_name,car_capacity_value,pv_esu_grid)
 
     def main(self,file):
         p1=Main(file)
-        p1.banner(file,1,'nexon','30.2','pv')
+        p1.banner(file,1,1,'nexon','30.2','pv')
+        t1=p1.table_maker()
         while True:
             try:
                 car_sel=input(red+"Enter Car No :- "+reset).split(',')
@@ -184,7 +196,7 @@ class Main():
                 for i in car_sel:
                     if "get help" in str(i):p1.help()
                     elif "get update"  in str(i):p1.check_update();quit()
-                    elif "get clear" in str(i): p1.clr();p1.banner(file,1,'nexon','30.2','pv')
+                    elif "get clear" in str(i):p1.clr();os.system('python Main.py');quit()
                     else :
                         print(red,"Wrong Command",reset)
             

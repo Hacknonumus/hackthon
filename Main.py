@@ -1,4 +1,4 @@
-import json , os ,requests
+importimport json , os ,requests
 from colorama import Fore
 from prettytable import PrettyTable
    
@@ -156,9 +156,25 @@ class Main():
             print("Going To ESU2EV")
 
         else:
+                        self.load,self.mode="UnderLoad","[*].PV2EV [*].PVE2ESU"
+                        
+                        
+                        self.sub_total = float(pv_value) - self.sub_total    #   self.sub_total == self.add (demand)
+        else:
             self.load,self.mode="UnderLoad","[*].PV2EV [*].PVE2ESU"
             self.sub_total = float(pv_value) - self.sub_total    #   self.sub_total == self.add (demand)
-            print("pv-ev_demand is going to ESU  ",self.sub_total)
+            print("pv-ev_demand is going to ESU  ",self.sub_total)  
+
+
+
+
+
+
+
+
+
+
+
         # Main.clr(self)
         for i in car_no:
             car=p1.json_car_viewer('formated_data.json',i,'name')

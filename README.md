@@ -42,3 +42,19 @@ The system simulates a scenario where you have:
 1. **Prerequisites:** Make sure you have Python 3 installed on your system. You'll also need to install the required libraries:
    ```bash
    pip install colorama prettytable requests
+
+2. **Data File:** Ensure that you have a properly formatted JSON file (formated_data.json) with the required data structure as shown in the example file.
+
+3. **Run the Program:**
+```bash 
+   python Main.py or python universal_smart_charging_infrastructure.py
+   ```
+
+**Interact with the Simulation:**
+   - Follow the on-screen prompts to:
+   - Select car numbers (separated by commas).
+   - Enter the time zone.
+   - Use the following commands for additional options:
+   - get help: Display help information.
+   - get update: Check for and download updates (if available).
+   - get clear: Clear the screen.

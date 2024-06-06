@@ -1,3 +1,5 @@
+#HACKATHON 2022 
+
 # Smart Energy Management System Simulation
 
 This Python program simulates a basic Smart Energy Management System (SEMS), particularly focusing on how it might intelligently manage energy resources to charge Electric Vehicles (EVs).
